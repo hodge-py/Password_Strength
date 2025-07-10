@@ -13,8 +13,6 @@ df = pd.read_csv('./data/Passwords.csv')
 
 special_characters =  " !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
 
-print(df.head(10))
-
 df['password_length'] = df['password'].apply(lambda x: len(x))
 
 df['Upper'] = df['password'].apply(lambda x: any(char.isupper() for char in x))
@@ -23,9 +21,13 @@ df['Lower'] = df['password'].apply(lambda x: any(char.islower() for char in x))
 
 df['Special'] = df['password'].apply(lambda x: any(char in special_characters for char in x))
 
-X = df[['password_length','Upper','Lower','Special']]
+df['Number'] = df['password'].apply(lambda x: any(char.isnumeric() for char in x))
+
+X = df[['password_length','Upper','Lower','Special','Number']]
 
 y = df['strength']
+
+print(df.head(10))
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.33, random_state=42)
@@ -35,6 +37,9 @@ clf = GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=
 preds = clf.predict(X_test)
 
 print(classification_report(y_test, preds))
+tmpdf = pd.DataFrame(data={'password_length': [1], 'Upper': [True], 'Lower': [False], 'Special': [False],'Number': [False]})
+print(tmpdf)
+print(clf.predict(tmpdf))
 
 
 

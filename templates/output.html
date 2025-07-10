@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +8,9 @@
 <body style="background-color: darkgray; color: white;">
 <h1 style="text-align: center;">Password Strength Test</h1>
 
-<form style="text-align: center"  action="{{ url_for('output') }}" method="post">
-<input type="text" id="password1" name="projectFilepath" placeholder="Enter Password" />
-<button type="submit">Submit</button>
+<h3 style="text-align: center;">{{ password }}</h3>
+<form style="text-align: center"  action="{{ url_for('hello_world') }}" method="get">
+<button type="submit">Go Back</button>
 </form>
 <!-- Content of your webpage goes here -->
 </body>
