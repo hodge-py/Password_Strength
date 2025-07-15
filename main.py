@@ -23,9 +23,9 @@ def output():
     lower = any(char.islower() for char in projectpath)
     special = any(char in special_characters for char in projectpath)
     number = any(char.isnumeric() for char in projectpath)
-    newArr = [[check_common_substrings(projectpath), lens, upper, lower, special, number]]
+    dftmp = pd.DataFrame(data={"password_length": [lens],"upper": [upper],"lower": [lower],"special": [special],"number": [number],"has_common_word": [check_common_substrings(projectpath)]})
     loaded_model = pickle.load(open('final_model.sav', 'rb'))
-    prediction = loaded_model.predict(newArr)
+    prediction = loaded_model.predict(dftmp)
     if prediction == 0:
         prediction = 'Weak'
     elif prediction == 1:
