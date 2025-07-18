@@ -17,29 +17,39 @@ pd.options.display.max_columns = None
 df = pd.read_csv('./data/new_passwords.csv')
 print(df.shape)
 """
-df = pd.read_csv('./data/Passwords.csv')
+df_weak = pd.read_csv('./data/pwlds_very_weak.csv')
+df_weak = df_weak.iloc[:50000]
 df2 = pd.read_csv('./data/pwlds_weak.csv')
+df2 = df2.iloc[:50000]
 df3 = pd.read_csv('./data/pwlds_average.csv')
+df3 = df3.iloc[:50000]
 df4 = pd.read_csv('./data/pwlds_strong.csv')
-df2['strength'] = 0
-df3['strength'] = 1
-df4['strength'] = 2
-df = pd.concat([df,df2,df3,df4])
+df4 = df4.iloc[:50000]
+df5 = pd.read_csv('./data/pwlds_very_strong.csv')
+df5 = df5.iloc[:50000]
+df = pd.concat([df_weak,df2,df3,df4,df5])
 print(df.shape)
-
+print(df.tail())
+df['password'] = df['password'].astype('object')
 with open('./data/rockyou-75.txt', 'r') as f:
     common_passwords = [line.strip().lower() for line in f if line.strip()]
 
 # Function to check for common passwords as substrings
 def check_common_substrings(password):
+    password = str(password)
     password = password.lower()
-    return any(pw for pw in common_passwords if pw in password)
+
+    for i in range(len(password)):
+        for j in range(i+3, len(password)):  # substrings of length >= min_length
+            if password[i:j] in common_passwords:
+                return True
+    return False
 
 df['has_common_word'] = df['password'].apply(lambda x: check_common_substrings(x))
 
 df.to_csv('./data/new_passwords.csv', index=False)
-
 """
+
 special_characters =  " !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
 
 df['password_length'] = df['password'].apply(lambda x: len(x))
@@ -74,8 +84,6 @@ pickle.dump(clf, open(filename, 'wb'))
 #tmpdf = pd.DataFrame(data={'password_length': [1], 'upper': [True], 'lower': [False], 'special': [False],'number': [False]})
 #print(tmpdf)
 #print(clf.predict(tmpdf))
-
-
 
 
 
